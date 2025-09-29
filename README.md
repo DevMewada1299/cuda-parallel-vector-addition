@@ -4,12 +4,12 @@
 
 The Plot Showing Number of blocks as fixed and changing the threads per block.
 
-![][image1] : /Users/devmewada/Desktop/CMPE_214/CMPE_214_LAB_2/Screenshot 2025-09-28 at 3.16.07 PM.png 
+![Threads per Block Performance](Plots/threads_per_block.png)
 The x-axis shows the threads vs time in the y-axis, Keeping the block size same we can already see that block sizes which are larger generally yield a good performance initially then plateaus out as we keep on increasing the threads, However at the end spectrum we need to look carefully, converting the x and y axes to a logarithmic scale will help us in investigating by giving us a clear idea.
 
 LOGARITHMIC GRAPH : 
 
-![][image2] : /Users/devmewada/Desktop/CMPE_214/CMPE_214_LAB_2/Screenshot 2025-09-28 at 3.20.21 PM.png
+![Threads per Block Logarithmic](Plots/threads_per_block_log.png)
 
 This provides a much better look the performance for the end spectrum, here we can see for larger blocks with more threads (1024) the performance actually decreases and blocks with sizes (16,64,32,256) with more threads (1024) give an optimal performance,  
 For the use case of my gpu performance jumps as threads grow from tiny thread values to more warp aligned values, i.e. 32 threads. Extremely large thread values like 1024 often plateaus or dips in performance maybe due to shared memory or scheduling effects reduced concurrency.
@@ -18,13 +18,13 @@ For the use case of my gpu performance jumps as threads grow from tiny thread va
 
 The Plot Showing Number of Threads as fixed and changing the number of blocks.
 
-![][image3] : /Users/devmewada/Desktop/CMPE_214/CMPE_214_LAB_2/Screenshot 2025-09-28 at 3.31.18 PM.png
+![Blocks Performance](Plots/blocks_performance.png)
 
 We can observe here that as we increase the number of blocks the performance generally increases, The threads sizes (256-512) generally start the best the plateaus out as we increase the number of blocks, to look more closely at the performance we need to scale the graph into a logarithmic scale. 
 
 LOGARITHMIC GRAPH : 
 
-![][image4] : /Users/devmewada/Desktop/CMPE_214/CMPE_214_LAB_2/Screenshot 2025-09-28 at 3.37.28 PM.png
+![Blocks Logarithmic](Plots/blocks_log.png)
 
 Here we can observe that the thread size 64 with block size 1024 is giving the best performance along with thread size 256 and 512 with the same block size as 1024\. The reason for the performance increase is generally because the scheduler has more independent blocks to distribute the work, i.e. if a block is already stalling the SM can run warps from another block. But we can see that the performance also plateaus after a certain amount of blocks, the reason for this is because each SM can hold a certain amount of blocks at once which is limited by Threads/SM, Warps/SM, Register/Shared memory the kernel can use. Once every SM fills to its per-SM max for the kernel, adding more blocks makes the queue longer resulting in a plateau.
 
